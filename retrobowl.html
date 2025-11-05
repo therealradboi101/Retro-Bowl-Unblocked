@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Bowl Embed</title>
+    <style>
+        /* --- Base Styles and Transitions --- */
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin: 0; /* Use 0 margin and padding on body for full gradient coverage */
+            padding: 0;
+            transition: background-color 0.5s, color 0.5s;
+            min-height: 100vh;
+        }
+        
+        .container {
+            /* Styles for the container of the iframe and button */
+            width: 800px; /* Adjust as needed */
+            margin: 20px auto; /* Re-center content with margin */
+        }
+        
+        h1 {
+            transition: color 0.5s;
+        }
+
+        /* --- Theme Switch Button Styling --- */
+        .theme-switch {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ddd;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* --- Fullscreen Button Base Style --- */
+        .fullscreen-btn {
+            background-color: #4CAF50; /* Default Green background (light mode) */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-bottom: 10px; /* Space between button and iframe */
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.5s; /* Smooth transition for color change */
+        }
+        .fullscreen-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* --- Dark Mode Specific Styles --- */
+        body.dark-mode {
+            /* Gradient Black for Dark Mode */
+            background: linear-gradient(to right, #000000, #434343);
+            color: white; /* Default text color in dark mode */
+        }
+
+        body.dark-mode h1 {
+            color: #eee; /* Lighter color for the H1 in dark mode */
+        }
+
+        body.dark-mode .fullscreen-btn {
+            /* Fullscreen button becomes RED in dark mode */
+            background-color: #D32F2F; /* Red background */
+        }
+
+        body.dark-mode .fullscreen-btn:hover {
+             background-color: #E53935; /* Slightly lighter red on hover */
+        }
+
+        .theme-switch-dark {
+            background-color: #555;
+            color: white;
+        }
+
+        /* --- Light Mode Specific Styles --- */
+        body.light-mode {
+            /* Gradient White for Light Mode */
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            color: #333;
+        }
+
+        /* Class added to the iframe when in fullscreen mode */
+        .fullscreen {
+            width: 100vw !important;
+            height: 100vh !important;
+            border: none;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999; /* Ensure it's on top of everything */
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-switch" onclick="toggleTheme()" id="themeToggleButton">Switch to Dark Mode</button>
+
+    <h1>RETRO BOWL - UNBLOCKED!!!</h1>
+
+    <div class="container">
+        <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen Game</button>
+
+        <iframe id="gameFrame"
+                src="https://blobby-boi.github.io/retro-bowl/"
+                width="800"
+                height="500"
+                title="Retro Bowl Unblocked Game"
+                frameborder="0"
+                allow="fullscreen"
+                allowfullscreen>
+            <p>Your browser does not support iframes.</p>
+        </iframe>
+    </div>
+
+    <script>
+        const body = document.body;
+        const themeToggleButton = document.getElementById('themeToggleButton');
+
+        // Function to set the theme based on preference
+        function setTheme(isDarkMode) {
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+                themeToggleButton.textContent = 'Switch to Light Mode';
+                themeToggleButton.classList.add('theme-switch-dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeToggleButton.textContent = 'Switch to Dark Mode';
+                themeToggleButton.classList.remove('theme-switch-dark');
+            }
+        }
+
+        // 1. Auto Dark Mode (checks OS preference on load)
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark);
+        
+        // Listen for OS theme changes in real-time
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            setTheme(event.matches);
+        });
+
+        // 2. Manual Theme Switch
+        function toggleTheme() {
+            // Check if dark mode is currently active by class presence
+            const isDarkModeActive = body.classList.contains('dark-mode');
+            setTheme(!isDarkModeActive); // Switch to the opposite theme
+        }
+
+        // --- Fullscreen Function (Remains the same) ---
+        function toggleFullscreen() {
+            const iframe = document.getElementById('gameFrame');
+
+            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                iframe.classList.remove('fullscreen');
+            } else {
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                } else if (iframe.mozRequestFullScreen) {
+                    iframe.mozRequestFullScreen();
+                } else if (iframe.webkitRequestFullscreen) {
+                    iframe.webkitRequestFullscreen();
+                } else if (iframe.msRequestFullscreen) {
+                    iframe.msRequestFullscreen();
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
